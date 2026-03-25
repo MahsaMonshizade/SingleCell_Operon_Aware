@@ -7,16 +7,16 @@ Every script imports from here — never hardcode paths elsewhere.
 
 # ── Data ─────────────────────────────────────────────────
 ADATA_PATH       = "pountain_data/outputs/lb_adata.h5ad"
-OPERON_NEIGHBORS = "operon_neighbors.csv"
+OPERON_NEIGHBORS = "operon_aware_data/operon_neighbors.csv"
 GFF_PATH         = "pountain_data/reference/GCF_000005845.2_ASM584v2_genomic.gff"
-OPERON_TSV       = "OperonSet.tsv"
+OPERON_TSV       = "operon_aware_data/OperonSet.tsv"
 
 # ── Model checkpoints ────────────────────────────────────
-MODEL_STANDARD   = "pountain_data/outputs/lb_scVI_model_benchmark"
-MODEL_OPERON     = "pountain_data/outputs/lb_scVI_model_operon_aware"
+MODEL_STANDARD   = "Results/models/lb_scVI_model_benchmark"
+MODEL_OPERON     = "Results/models/lb_scVI_model_operon_aware"
 
 # ── Evaluation outputs ───────────────────────────────────
-OUT_DIR              = "pountain_data/outputs"
+OUT_DIR              = "Results"
 OUT_COMPARISON_PLOT  = f"{OUT_DIR}/model_comparison.png"
 OUT_REGULONDB_PLOT   = f"{OUT_DIR}/regulondb_operon_evaluation.png"
 OUT_REGULONDB_CSV    = f"{OUT_DIR}/per_operon_results.csv"

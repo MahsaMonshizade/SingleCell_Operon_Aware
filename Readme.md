@@ -70,13 +70,50 @@ pip install scanpy scikit-learn scipy --break-system-packages
 
 ---
 
+## Data Provenance
+ 
+### Source dataset
+This project builds on the *E. coli* K-12 MG1655 single-bacterium RNA-seq dataset
+from Pountain et al., generated using the **PETRI-seq** protocol:
+ 
+> Pountain AW, Jiang P, Podkowik M, Shopsin B, Torres VJ, Yanai I.
+> *A quantitative model for the transcriptional landscape of the bacterial cell cycle.*
+> bioRxiv, 2022. https://www.biorxiv.org/content/10.1101/2022.10.22.513359v1
+ 
+The raw count matrices were processed using `notebooks/initial_processing.ipynb`,
+the Yanai Lab's notebook from the
+[TRIPs repository](https://github.com/yanailab/TRIPs/blob/main/Ecoli_D1/initial_processing.ipynb),
+stored locally in this project for reproducibility.
+ 
+**What the notebook does (~1 hr runtime):**
+- Imports raw PETRI-seq count matrices from `pountain_data/outputs/count_matrices/`
+- Quality control filtering — removes low-quality cells and lowly expressed genes,
+  reducing from ~4,300+ GFF genes down to the **3,070 genes** used in this project
+- Normalizes and runs standard scVI denoising
+- Generates global gene correlation patterns used for exploratory analysis
+ 
+**Output:** `pountain_data/outputs/lb_adata.h5ad` (~500 MB) with `var_names` as
+Blattner locus tags (e.g. `b0001`). This file is too large for the repo — run the
+notebook to generate it, or contact the Yanai Lab if you have access issues.
+ 
+> **Note on gene filtering:** the QC step in this notebook is the reason ~808 operon
+> neighbor pairs are silently dropped when loading `operon_neighbors.csv` — those
+> pairs involve genes filtered out here. This is expected behaviour.
+
+---
+generate neighboring genes using following:
+```python 
+python operon_aware_lib/generate_neighbors.py 
+```
+---
+
 ## Input Files
 
 | File | Description |
 |---|---|
 | `pountain_data/outputs/lb_adata.h5ad` | AnnData object with Blattner locus tags (`b0001`...) as `var_names` |
-| `operon_neighbors.csv` | Two-column CSV (`gene_1`, `gene_2`) of operon-adjacent gene pairs in Blattner format |
-| `OperonSet.tsv` | RegulonDB operon set (downloaded from [regulondb.ccg.unam.mx](https://regulondb.ccg.unam.mx)) |
+| `operon_aware_data/operon_neighbors.csv` | Two-column CSV (`gene_1`, `gene_2`) of operon-adjacent gene pairs in Blattner format |
+| `operon_aware_data/OperonSet.tsv` | RegulonDB operon set (downloaded from [regulondb.ccg.unam.mx](https://regulondb.ccg.unam.mx)) |
 | `pountain_data/reference/*.gff` | RefSeq GFF3 annotation for *E. coli* K-12 MG1655 — used to map gene symbols to Blattner tags |
 
 ### Note on gene naming

@@ -31,4 +31,4 @@ def generate_neighbor_list(gff_file, output_file):
     print(f"Successfully saved {len(neighbors)} neighbor pairs to {output_file}")
 
 # Run the script
-generate_neighbor_list('pountain_data/reference/GCF_000005845.2_ASM584v2_genomic.gff', 'operon_neighbors.csv')
+generate_neighbor_list('pountain_data/reference/GCF_000005845.2_ASM584v2_genomic.gff', 'operon_aware_data/operon_neighbors.csv')
