@@ -40,6 +40,7 @@ def parse_regulondb_operons(filepath: str) -> pd.DataFrame:
     return df
 
 
+
 def load_operons(filepath: str, gene_to_idx: dict):
     """
     Parse RegulonDB operons and filter to genes present in adata.

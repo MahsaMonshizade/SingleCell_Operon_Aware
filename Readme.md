@@ -32,7 +32,8 @@ project/
 │   ├── __init__.py
 │   ├── load_neighbor_indices.py     # Load operon pairs CSV → tensor
 │   ├── gene_mapping.py              # GFF parsing: gene symbol → adata index
-│   └── operon_utils.py              # RegulonDB TSV parsing and filtering
+│   ├── operon_utils.py              # RegulonDB TSV parsing and filtering
+│   └── generate_neighbors.py        # GFF parsing: find neighbor genes → csv file
 │
 ├── scripts/                         # Executable pipeline scripts
 │   ├── train_standard.py            # Train baseline scVI
@@ -41,7 +42,8 @@ project/
 │   └── evaluate_regulondb.py        # RegulonDB ground-truth evaluation
 │
 └── notebooks/
-    └── results.ipynb                # Results exploration (no heavy compute)
+    ├── results.ipynb                # Results exploration (no heavy compute)
+    └── initial_processing.ipynb     # Raw data processing and generate 
 ```
 
 The scVI module modifications live in the cloned `scvi-tools` repo:
@@ -94,11 +96,9 @@ stored locally in this project for reproducibility.
  
 **Output:** `pountain_data/outputs/lb_adata.h5ad` (~500 MB) with `var_names` as
 Blattner locus tags (e.g. `b0001`). This file is too large for the repo — run the
-notebook to generate it, or contact the Yanai Lab if you have access issues.
+notebook to generate it.
  
-> **Note on gene filtering:** the QC step in this notebook is the reason ~808 operon
-> neighbor pairs are silently dropped when loading `operon_neighbors.csv` — those
-> pairs involve genes filtered out here. This is expected behaviour.
+
 
 ---
 generate neighboring genes using following:
@@ -113,7 +113,7 @@ python operon_aware_lib/generate_neighbors.py
 |---|---|
 | `pountain_data/outputs/lb_adata.h5ad` | AnnData object with Blattner locus tags (`b0001`...) as `var_names` |
 | `operon_aware_data/operon_neighbors.csv` | Two-column CSV (`gene_1`, `gene_2`) of operon-adjacent gene pairs in Blattner format |
-| `operon_aware_data/OperonSet.tsv` | RegulonDB operon set (downloaded from [regulondb.ccg.unam.mx](https://regulondb.ccg.unam.mx)) |
+| `operon_aware_data/OperonSet.tsv` | RegulonDB operon set (downloaded from [regulondb.ccg.unam.mx](https://regulondb.ccg.unam.mx/datasets)) |
 | `pountain_data/reference/*.gff` | RefSeq GFF3 annotation for *E. coli* K-12 MG1655 — used to map gene symbols to Blattner tags |
 
 ### Note on gene naming
