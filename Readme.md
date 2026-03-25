@@ -163,14 +163,14 @@ Outputs are saved to `pountain_data/outputs/`:
 
 ## Evaluation Metrics
 
-### General (`compare_models.py`)
+<!-- ### General (`compare_models.py`)
 
 | Metric | Description |
 |---|---|
 | **ELBO** | Evidence lower bound — overall model fit (higher = better) |
 | **Marginal LL** | Marginal log-likelihood via 50 MC samples — generalization quality |
 | **Operon Consistency** | Mean Pearson r between denoised expression of training operon pairs |
-| **Silhouette Score** | Cluster separability in latent space using Leiden communities |
+| **Silhouette Score** | Cluster separability in latent space using Leiden communities | -->
 
 ### RegulonDB (`evaluate_regulondb.py`)
 
@@ -185,7 +185,7 @@ Outputs are saved to `pountain_data/outputs/`:
 
 ---
 
-## Lambda Tuning
+<!-- ## Lambda Tuning
 
 The `lambda_val` hyperparameter controls the strength of the operon penalty. Results from the sweep on this dataset:
 
@@ -195,11 +195,11 @@ The `lambda_val` hyperparameter controls the strength of the operon penalty. Res
 | **0.05** | **+0.0038** | **53.4%** | **Best — current setting** |
 | 0.1 | −0.0025 | 49.6% | Over-penalized |
 
-Too high a lambda distorts the reconstruction loss. The optimum for this dataset is around **0.05**.
+Too high a lambda distorts the reconstruction loss. The optimum for this dataset is around **0.05**. -->
 
 ---
 
-## Results Summary (lambda = 0.05)
+<!-- ## Results Summary (lambda = 0.05)
 
 | Metric | Standard SCVI | Operon SCVI | Winner |
 |---|---|---|---|
@@ -208,7 +208,7 @@ Too high a lambda distorts the reconstruction loss. The optimum for this dataset
 | Operon Consistency | 0.3377 | 0.3415 | ✓ Operon |
 | Silhouette Score | 0.0646 | 0.0945 | ✓ Operon |
 | Intra-operon r (all) | 0.3377 | 0.3415 | ✓ Operon |
-| Within-operon similarity | 0.3427 | 0.3498 | ✓ Operon |
+| Within-operon similarity | 0.3427 | 0.3498 | ✓ Operon | -->
 
 ---
 
