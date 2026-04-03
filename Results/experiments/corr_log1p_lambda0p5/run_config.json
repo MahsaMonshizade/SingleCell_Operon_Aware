@@ -1,0 +1,22 @@
+{
+  "adata_path": "pountain_data/outputs/lb_adata.h5ad",
+  "experiment": "corr_log1p_lambda0p5",
+  "experiment_dir": "Results/experiments/corr_log1p_lambda0p5",
+  "huber_delta": 0.1,
+  "lambda_val": 0.5,
+  "model_kwargs": {
+    "dispersion": "gene",
+    "dropout_rate": 0.1,
+    "gene_likelihood": "zinb",
+    "n_hidden": 64,
+    "n_latent": 5,
+    "n_layers": 2
+  },
+  "neighbor_csv": "operon_aware_data/operon_neighbors.csv",
+  "neighbor_loss": "corr_log1p",
+  "operon_model_path": "Results/experiments/corr_log1p_lambda0p5/models/operon",
+  "standard_model_path": "Results/experiments/corr_log1p_lambda0p5/models/standard",
+  "train_kwargs": {
+    "check_val_every_n_epoch": 1
+  }
+}

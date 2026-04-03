@@ -1,0 +1,17 @@
+{
+  "adata_path": "pountain_data/outputs/lb_adata.h5ad",
+  "experiment": "baseline_shared",
+  "experiment_dir": "Results/experiments/baseline_shared",
+  "model_kwargs": {
+    "dispersion": "gene",
+    "dropout_rate": 0.1,
+    "gene_likelihood": "zinb",
+    "n_hidden": 64,
+    "n_latent": 5,
+    "n_layers": 2
+  },
+  "standard_model_path": "Results/experiments/baseline_shared/models/standard",
+  "train_kwargs": {
+    "check_val_every_n_epoch": 1
+  }
+}

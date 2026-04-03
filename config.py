@@ -1,46 +1,42 @@
 """
 config.py
 =========
-Single source of truth for all paths and hyperparameters.
-Every script imports from here — never hardcode paths elsewhere.
+Default configuration for data paths, model hyperparameters, and experiment
+naming. Scripts can override experiment settings from the command line.
 """
 
 # ── Data ─────────────────────────────────────────────────
-ADATA_PATH       = "pountain_data/outputs/lb_adata.h5ad"
+ADATA_PATH = "pountain_data/outputs/lb_adata.h5ad"
 OPERON_NEIGHBORS = "operon_aware_data/operon_neighbors.csv"
-GFF_PATH         = "pountain_data/reference/GCF_000005845.2_ASM584v2_genomic.gff"
-OPERON_TSV       = "operon_aware_data/OperonSet.tsv"
+GFF_PATH = "pountain_data/reference/GCF_000005845.2_ASM584v2_genomic.gff"
+OPERON_TSV = "operon_aware_data/OperonSet.tsv"
 
-# ── Model checkpoints ────────────────────────────────────
-MODEL_STANDARD   = "Results/models/lb_scVI_model_benchmark"
-MODEL_OPERON     = "Results/models/lb_scVI_model_operon_aware"
+# ── Experiment defaults ──────────────────────────────────
+RESULTS_ROOT = "Results"
+EXPERIMENTS_ROOT = f"{RESULTS_ROOT}/experiments"
+ARCHIVE_ROOT = f"{RESULTS_ROOT}/archive"
 
-# ── Evaluation outputs ───────────────────────────────────
-OUT_DIR              = "Results"
-OUT_COMPARISON_PLOT  = f"{OUT_DIR}/model_comparison.png"
-OUT_REGULONDB_PLOT   = f"{OUT_DIR}/regulondb_operon_evaluation.png"
-OUT_REGULONDB_CSV    = f"{OUT_DIR}/per_operon_results.csv"
+DEFAULT_NEIGHBOR_LOSS = "corr_log1p"
+LAMBDA_VAL = 0.5
+HUBER_DELTA = 0.1
+DEFAULT_EXPERIMENT_NAME = "corr_log1p_lambda0p5"
 
-# ── Shared model architecture ─────────────────────────────
-# Used by both train_standard.py and train_operon.py
+# ── Shared model architecture ────────────────────────────
 MODEL_KWARGS = dict(
-    n_layers        = 2,
-    n_latent        = 5,
-    n_hidden        = 64,
-    dropout_rate    = 0.1,
-    gene_likelihood = "zinb",
-    dispersion      = "gene",
+    n_layers=2,
+    n_latent=5,
+    n_hidden=64,
+    dropout_rate=0.1,
+    gene_likelihood="zinb",
+    dispersion="gene",
 )
 
-# ── OperonAwareSCVI-specific ──────────────────────────────
-LAMBDA_VAL = 1.0   # best from sweep: {0.01: +0.0031, 0.05: +0.0038, 0.1: -0.0025}
-
-# ── Training ──────────────────────────────────────────────
+# ── Training ─────────────────────────────────────────────
 TRAIN_KWARGS = dict(
-    check_val_every_n_epoch = 1,
+    check_val_every_n_epoch=1,
 )
 
-# ── Evaluation ────────────────────────────────────────────
-EVAL_N_CELLS      = 3000   # cells to subsample for expression computation
-EVAL_N_MC_SAMPLES = 50     # MC samples for marginal log-likelihood
-EVAL_RANDOM_SEED  = 42
+# ── Evaluation ───────────────────────────────────────────
+EVAL_N_CELLS = None
+EVAL_N_MC_SAMPLES = 50
+EVAL_RANDOM_SEED = 42

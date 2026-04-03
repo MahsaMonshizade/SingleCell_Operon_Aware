@@ -26,19 +26,18 @@ def parse_regulondb_operons(filepath: str) -> pd.DataFrame:
             genes = [g.strip() for g in parts[6].split(";") if g.strip()]
             if len(genes) < 2:
                 continue
-            confidence = parts[8].strip() if len(parts) > 8 else "W"
+            raw_conf   = parts[8].strip() if len(parts) > 8 else None
             rows.append({
                 "operon_id":        parts[0].strip(),
                 "operon_name":      parts[1].strip(),
                 "genes":            genes,
-                "confidence_label": conf_map.get(confidence, "Weak"),
+                "confidence_label": conf_map.get(raw_conf, None),
             })
 
     df = pd.DataFrame(rows)
     print(f"[operon_utils] Parsed {len(df)} multi-gene operons from RegulonDB")
-    print(df["confidence_label"].value_counts().to_string())
+    print(df["confidence_label"].value_counts(dropna=False).to_string())
     return df
-
 
 
 def load_operons(filepath: str, gene_to_idx: dict):
@@ -75,5 +74,10 @@ def load_operons(filepath: str, gene_to_idx: dict):
         sub     = df[df["confidence_label"] == conf]
         n_valid = (sub["genes_found"].apply(len) >= 2).sum()
         print(f"  {conf:9s}: {n_valid}/{len(sub)} operons have ≥2 genes in adata")
+    n_nan = df["confidence_label"].isna().sum()
+    if n_nan > 0:
+        n_nan_valid = (df[df["confidence_label"].isna()]["genes_found"].apply(len) >= 2).sum()
+        print(f"  {'NaN':9s}: {n_nan_valid}/{n_nan} operons have ≥2 genes in adata "
+              f"(confidence field missing or unrecognised in TSV)")
 
     return valid, df
