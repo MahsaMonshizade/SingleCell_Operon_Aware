@@ -12,7 +12,7 @@ This script uses genome annotation and the heuristic training pairs to compare:
   5. correlation-vs-distance decay for same- vs opposite-strand pairs
 
 Usage (from project root):
-    python scripts/evaluate_genome_proximity.py --experiment corr_log1p_lambda0p01
+    python scripts/evaluate_genome_proximity.py --experiment corr_log1p_lambda0p01 --baseline-experiment shared_baseline
 """
 
 import argparse
@@ -120,10 +120,11 @@ print("Genome proximity evaluation")
 print("=" * 60)
 
 parser = argparse.ArgumentParser()
-add_experiment_args(parser)
+add_experiment_args(parser, include_baseline_arg=True)
 args = parser.parse_args()
 
 paths = build_experiment_paths(args.experiment)
+baseline_paths = build_experiment_paths(args.baseline_experiment)
 ensure_experiment_dirs(paths)
 out_plot = plot_path(paths, "genome_proximity_evaluation.png")
 out_csv = metrics_path(paths, "genome_proximity_metrics.csv")
@@ -131,9 +132,10 @@ out_distance_csv = metrics_path(paths, "genome_proximity_distance_bins.csv")
 
 print("\nLoading data and models...")
 print(f"  Experiment: {args.experiment}")
+print(f"  Baseline:   {args.baseline_experiment}")
 adata = sc.read_h5ad(ADATA_PATH)
 scvi.data.setup_anndata(adata)
-model_std = StandardSCVI.load(str(paths["model_standard"]), adata=adata)
+model_std = StandardSCVI.load(str(baseline_paths["model_standard"]), adata=adata)
 model_op = OperonAwareSCVI.load(str(paths["model_operon"]), adata=adata)
 
 np.random.seed(EVAL_RANDOM_SEED)

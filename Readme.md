@@ -206,20 +206,34 @@ The intended workflow is:
 
 ## Usage
 
-All scripts are run from the **project root** and should use the same `--experiment` name:
+All scripts are run from the **project root**.
+
+### One-time baseline
+
+Train the standard model once and reuse it across many operon-aware experiments:
+
+```bash
+python scripts/train_standard.py --experiment shared_baseline
+```
+
+### Operon-aware experiments
+
+For each loss / lambda setting, use a separate experiment name:
 
 ```bash
 # Example experiment name
 EXP=corr_log1p_lambda0p01
 
-# 1. Train both models
-python scripts/train_standard.py --experiment $EXP
+# 1. Train the operon-aware model
 python scripts/train_operon.py --experiment $EXP --neighbor-loss corr_log1p --lambda-val 0.01
 
 # 2. Run evaluations
-python scripts/evaluate_regulondb.py --experiment $EXP
-python scripts/evaluate_genome_proximity.py --experiment $EXP
-python scripts/evaluate_corruption_recovery.py --experiment $EXP
+python scripts/evaluate_regulondb.py --experiment $EXP --baseline-experiment shared_baseline
+python scripts/evaluate_genome_proximity.py --experiment $EXP --baseline-experiment shared_baseline
+python scripts/evaluate_corruption_recovery.py --experiment $EXP --baseline-experiment shared_baseline
+
+# 3. Summarize all finished experiments
+python scripts/summarize_experiments.py --baseline-experiment shared_baseline
 ```
 
 Outputs for that run will be saved under:

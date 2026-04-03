@@ -51,6 +51,7 @@ def add_experiment_args(
     parser: argparse.ArgumentParser,
     *,
     include_model_args: bool = False,
+    include_baseline_arg: bool = False,
 ) -> None:
     parser.add_argument(
         "--experiment",
@@ -75,6 +76,12 @@ def add_experiment_args(
             type=float,
             default=HUBER_DELTA,
             help="Huber delta used when neighbor_loss=huber_log1p.",
+        )
+    if include_baseline_arg:
+        parser.add_argument(
+            "--baseline-experiment",
+            default="shared_baseline",
+            help=f"Experiment folder name for the shared standard-model baseline under {EXPERIMENTS_ROOT}.",
         )
 
 

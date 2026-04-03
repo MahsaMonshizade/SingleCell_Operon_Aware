@@ -1,0 +1,5 @@
+metric,standard,operon,winner,direction,delta_operon_minus_standard
+masked_entry_corr,0.5506567269706675,0.5504021130485559,standard,higher_better,-0.0002546139221115684
+masked_entry_mse,18.06811217382324,18.068214175891608,standard,lower_better,0.00010200206836685766
+downsample_recovery_corr,0.6056011757120596,0.6054194452619464,standard,higher_better,-0.00018173045011327105
+downsample_recovery_mse,18.990288524490406,18.990445496204426,standard,lower_better,0.00015697171401996002

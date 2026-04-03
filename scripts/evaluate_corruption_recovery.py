@@ -15,7 +15,7 @@ Metrics:
   4. Downsampled-entry recovery MSE on log1p normalized scale
 
 Usage (from project root):
-    python scripts/evaluate_corruption_recovery.py --experiment corr_log1p_lambda0p01
+    python scripts/evaluate_corruption_recovery.py --experiment corr_log1p_lambda0p01 --baseline-experiment shared_baseline
 """
 
 import argparse
@@ -160,19 +160,21 @@ print("Corruption recovery evaluation")
 print("=" * 60)
 
 parser = argparse.ArgumentParser()
-add_experiment_args(parser)
+add_experiment_args(parser, include_baseline_arg=True)
 args = parser.parse_args()
 
 paths = build_experiment_paths(args.experiment)
+baseline_paths = build_experiment_paths(args.baseline_experiment)
 ensure_experiment_dirs(paths)
 out_plot = plot_path(paths, "corruption_recovery_evaluation.png")
 out_csv = metrics_path(paths, "corruption_recovery_metrics.csv")
 
 print("\nLoading data and models...")
 print(f"  Experiment: {args.experiment}")
+print(f"  Baseline:   {args.baseline_experiment}")
 adata = sc.read_h5ad(ADATA_PATH)
 scvi.data.setup_anndata(adata)
-model_std = StandardSCVI.load(str(paths["model_standard"]), adata=adata)
+model_std = StandardSCVI.load(str(baseline_paths["model_standard"]), adata=adata)
 model_op = OperonAwareSCVI.load(str(paths["model_operon"]), adata=adata)
 
 if EVAL_N_CELLS is None or EVAL_N_CELLS >= adata.n_obs:

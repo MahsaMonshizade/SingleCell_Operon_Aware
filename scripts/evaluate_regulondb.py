@@ -11,7 +11,7 @@ Metrics:
   4. Top improved / degraded operons table
 
 Usage (from project root):
-    python scripts/evaluate_regulondb.py --experiment corr_log1p_lambda0p01
+    python scripts/evaluate_regulondb.py --experiment corr_log1p_lambda0p01 --baseline-experiment shared_baseline
 """
 
 import argparse
@@ -73,10 +73,11 @@ def style_ax(ax, title=""):
 # 0.  Load
 # ═══════════════════════════════════════════
 parser = argparse.ArgumentParser()
-add_experiment_args(parser)
+add_experiment_args(parser, include_baseline_arg=True)
 args = parser.parse_args()
 
 paths = build_experiment_paths(args.experiment)
+baseline_paths = build_experiment_paths(args.baseline_experiment)
 ensure_experiment_dirs(paths)
 out_regulondb_plot = plot_path(paths, "regulondb_operon_evaluation.png")
 out_regulondb_csv = metrics_path(paths, "per_operon_results.csv")
@@ -84,9 +85,10 @@ out_regulondb_csv = metrics_path(paths, "per_operon_results.csv")
 print("=" * 50)
 print("Loading data, models, and RegulonDB...")
 print(f"  Experiment: {args.experiment}")
+print(f"  Baseline:   {args.baseline_experiment}")
 adata = sc.read_h5ad(ADATA_PATH)
 scvi.data.setup_anndata(adata)
-model_std = StandardSCVI.load(str(paths["model_standard"]), adata=adata)
+model_std = StandardSCVI.load(str(baseline_paths["model_standard"]), adata=adata)
 model_op  = OperonAwareSCVI.load(str(paths["model_operon"]), adata=adata)
 print(f"  Cells: {adata.n_obs:,}  |  Genes: {adata.n_vars:,}")
 
